@@ -25,10 +25,10 @@ At this point there is nothing else to do.  The output file will get created in 
 
 These logs are not huge (I have a 765KB file which contains 17000 items) so make sure there is some housekeep done to prevent the drive filling up given a long enough timeframe.  Again this is something that can be automated easily enough by modifing the PS1 file.
 
-The CSV file can be opened in any editor but the most likly candidate is Excel.  Since this is a CSV file the data can be further using PowerShell such as searching for all lockouts for one user...
+The CSV file can be opened in any editor but the most likly candidate is Excel.  Since this is a CSV file, the data can be further manipulated using PowerShell such as searching for all lockouts for one user...
 
 ```powershell
-Import-Csv 'AccountLockoutLog(July-2018).csv' | Where-Object -Property Username -EQ -Value ASample
+Import-Csv -Path 'AccountLockoutLog(July-2018).csv' | Where-Object -Property Username -EQ -Value ASample
 
 Username CallerComputer TimeCreated        
 -------- -------------- -----------        
@@ -40,7 +40,7 @@ ASample  DT002482       16/03/2017 18:35:09
 Listing how many lockouts for each logged user...
 
 ```powershell
-Import-Csv 'AccountLockoutLog(July-2018).csv' | Group-Object -Property Username -NoElement | Sort-Object -Property Count -Descending
+Import-Csv -Path 'AccountLockoutLog(July-2018).csv' | Group-Object -Property Username -NoElement | Sort-Object -Property Count -Descending
 
 Count Name                     
 ----- ----                     
@@ -65,7 +65,7 @@ Count Name
 Search for lockouts for a single user across multiple CSV files...
 
 ```powershell
-Get-ChildItem -Filter *.csv | ForEach { Import-Csv -Path $PSItem.FullName } | Where-Object -Property Username -EQ -Value ASample
+Get-ChildItem -Filter *.csv | ForEach-Object { Import-Csv -Path $PSItem.FullName } | Where-Object -Property Username -EQ -Value ASample
 
 
 Username CallerComputer TimeCreated        
